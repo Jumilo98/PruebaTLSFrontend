@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard';
 import { alertService } from '@/utils/alerts';
+import { useRouter } from 'next/navigation';  // Importamos useRouter
 
 interface Movie {
   id: string;
@@ -15,8 +16,17 @@ interface Movie {
 export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();  // Inicializamos el enrutador
 
   useEffect(() => {
+    const user = localStorage.getItem('user');  // Verificamos si el usuario existe en localStorage
+
+    if (!user) {
+      // Si no hay usuario, redirigimos a la página de login
+      router.push('/login');
+      return;
+    }
+
     const fetchMovies = async () => {
       try {
         const response = await axios.get('/api/movies');
@@ -29,7 +39,7 @@ export default function Home() {
     };
 
     fetchMovies();
-  }, []);
+  }, [router]);  // Añadimos router en las dependencias para que se recargue cuando cambie
 
   if (loading) {
     return <div>Cargando películas...</div>;
