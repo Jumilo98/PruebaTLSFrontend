@@ -1,13 +1,17 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '../../../../../db/connect';
 import { Review } from '../../../../models/Review';
-import { User } from '../../../../models/User';  // Asegúrate de importar el modelo User
+import { User } from '../../../../models/User';
 
 export async function GET(request: Request, { params }: { params: { userId: string } }) {
   try {
+    // Asegúrate de que params esté disponible
+    const { userId } = await params;
+
     await connectToDatabase();
 
-    const reviews = await Review.find({ user: params.userId }).populate('movie', 'title');
+    // Buscar reseñas del usuario
+    const reviews = await Review.find({ id: userId }).populate('movie', 'title');
     return NextResponse.json(reviews);
   } catch (error) {
     console.error(error);

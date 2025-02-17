@@ -1,22 +1,70 @@
 'use client'
 
-import Dropdown from '../../components/Dropdown';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import IconCoffee from '../../components/IconCoffee';
 import IconCalendar from '../../components/IconCalendar';
 import IconMapPin from '../../components/IconMapPin';
 import IconMail from '../../components/IconMail';
 import IconPhone from '../../components/IconPhone';
 import IconTwitter from '../../components/IconTwitter';
-import IconDribbble from '../../components/IconDribbble';
 import IconGithub from '../../components/IconGithub';
-import IconHorizontalDots from '../../components/IconHorizontalDots';
+import axios from 'axios';
 
 interface User {
+    _id: number
     username: string;
     email: string;
 }
 
+interface Review {
+    content: string;
+    rating: number;
+    movieId: string;
+    createdAt: string;
+}
+
 const Profile = () => {
+    const [user, setUser] = useState<User | null>(null);
+    const [reviews, setReviews] = useState<Review[]>([]);
+    const [reviewsLoaded, setReviewsLoaded] = useState(false); // Nueva variable de estado para controlar la carga de reseñas
+    const router = useRouter();
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (!storedUser) {
+            // Si no hay usuario en el localStorage, redirigir a login
+            router.push('/login');
+        } else {
+            const userData = JSON.parse(storedUser);
+            setUser(userData);
+        }
+    }, [router]);
+
+     useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`/api/reviews/user/${user?._id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setReviews(response.data); // Asumimos que la respuesta contiene las reseñas del usuario
+                setReviewsLoaded(true); // Marcar como cargadas las reseñas
+            } catch (error) {
+                console.error('Error al obtener las reseñas:', error);
+            }
+        };
+
+        if (user && !reviewsLoaded) {
+            fetchReviews();
+        }
+    }, [user, reviewsLoaded]);
+
+    if (!user) {
+        return <div>Cargando...</div>; // Aseguramos que no se renderice el contenido hasta que haya un usuario
+    }
 
     return (
         <div>
@@ -25,32 +73,32 @@ const Profile = () => {
                     <div className="panel">
                         <div className="mb-5">
                             <div className="flex flex-col justify-center items-center">
-                                <img src="/assets/profile-34.jpeg" alt="img" className="w-24 h-24 rounded-full object-cover  mb-5" />
-                                <p className="font-semibold text-primary text-xl">Jimmy Turner</p>
+                                <img src="/images/auth/profile-34.jpeg" alt="img" className="w-24 h-24 rounded-full object-cover  mb-5" />
+                                <p className="font-semibold text-primary text-xl">{user.username}</p>
                             </div>
                             <ul className="mt-5 flex flex-col max-w-[160px] m-auto space-y-4 font-semibold text-white-dark">
                                 <li className="flex items-center gap-2">
                                     <IconCoffee className="shrink-0" />
-                                    Web Developer
+                                    {user.work ?? 'undefined'}
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <IconCalendar className="shrink-0" />
-                                    Jan 20, 1989
+                                    {user.birthdate ?? 'undefined'}
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <IconMapPin className="shrink-0" />
-                                    New York, USA
+                                    {user.location ?? 'undefined'}
                                 </li>
                                 <li>
                                     <button className="flex items-center gap-2">
                                         <IconMail className="w-5 h-5 shrink-0" />
-                                        <span className="text-primary truncate">jimmy@gmail.com</span>
+                                        <span className="text-primary truncate">{user.email}</span>
                                     </button>
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <IconPhone />
                                     <span className="whitespace-nowrap" dir="ltr">
-                                        +1 (530) 555-12121
+                                        {user.phone ?? 'undefined'}
                                     </span>
                                 </li>
                             </ul>
@@ -58,11 +106,6 @@ const Profile = () => {
                                 <li>
                                     <button className="btn btn-info flex items-center justify-center rounded-full w-10 h-10 p-0">
                                         <IconTwitter className="w-5 h-5" />
-                                    </button>
-                                </li>
-                                <li>
-                                    <button className="btn btn-danger flex items-center justify-center rounded-full w-10 h-10 p-0">
-                                        <IconDribbble />
                                     </button>
                                 </li>
                                 <li>
@@ -75,83 +118,23 @@ const Profile = () => {
                     </div>
                     <div className="panel lg:col-span-2 xl:col-span-3">
                         <div className="flex items-center justify-between mb-5">
-                            <h5 className="font-semibold text-lg dark:text-white-light">Payment History</h5>
+                            <h5 className="font-semibold text-lg dark:text-white-light">Historial de Reseñas</h5>
                         </div>
                         <div>
-                            <div className="border-b border-[#ebedf2] dark:border-[#1b2e4b]">
-                                <div className="flex items-center justify-between py-2">
-                                    <h6 className="text-[#515365] font-semibold dark:text-white-dark">
-                                        March
-                                        <span className="block text-white-dark dark:text-white-light">Pro Membership</span>
-                                    </h6>
-                                    <div className="flex items-start justify-between ltr:ml-auto rtl:mr-auto">
-                                        <p className="font-semibold">90%</p>
-                                        <div className="dropdown ltr:ml-4 rtl:mr-4">
-                                            <Dropdown
-                                                offset={[0, 5]}
-                                                placement={'bottom-start'}
-                                                btnClassName="hover:text-primary"
-                                                button={<IconHorizontalDots className="opacity-80 hover:opacity-100" />}
-                                            >
-                                                <ul className="!min-w-[150px]">
-                                                    <li>
-                                                        <button type="button">View Invoice</button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="button">Download Invoice</button>
-                                                    </li>
-                                                </ul>
-                                            </Dropdown>
-                                        </div>
+                            {reviews.length === 0 ? (
+                                <p>No tienes reseñas realizadas.</p>
+                            ) : (
+                                reviews.map((review) => (
+                                    <div key={review._id} className="border-b border-[#ebedf2] dark:border-[#1b2e4b] py-2">
+                                        <h6 className="text-[#515365] font-semibold dark:text-white-dark">
+                                            Película: {review.movieId}
+                                        </h6>
+                                        <p>Calificación: {review.rating} ⭐</p>
+                                        <p>{review.content}</p>
+                                        <p className="text-[#6c757d]">Publicado el: {new Date(review.createdAt).toLocaleDateString()}</p>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="border-b border-[#ebedf2] dark:border-[#1b2e4b]">
-                                <div className="flex items-center justify-between py-2">
-                                    <h6 className="text-[#515365] font-semibold dark:text-white-dark">
-                                        February
-                                        <span className="block text-white-dark dark:text-white-light">Pro Membership</span>
-                                    </h6>
-                                    <div className="flex items-start justify-between ltr:ml-auto rtl:mr-auto">
-                                        <p className="font-semibold">90%</p>
-                                        <div className="dropdown ltr:ml-4 rtl:mr-4">
-                                            <Dropdown offset={[0, 5]} placement={'bottom-start'} button={<IconHorizontalDots className="opacity-80 hover:opacity-100" />}>
-                                                <ul className="!min-w-[150px]">
-                                                    <li>
-                                                        <button type="button">View Invoice</button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="button">Download Invoice</button>
-                                                    </li>
-                                                </ul>
-                                            </Dropdown>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div className="flex items-center justify-between py-2">
-                                    <h6 className="text-[#515365] font-semibold dark:text-white-dark">
-                                        January
-                                        <span className="block text-white-dark dark:text-white-light">Pro Membership</span>
-                                    </h6>
-                                    <div className="flex items-start justify-between ltr:ml-auto rtl:mr-auto">
-                                        <p className="font-semibold">90%</p>
-                                        <div className="dropdown ltr:ml-4 rtl:mr-4">
-                                            <Dropdown offset={[0, 5]} placement={'bottom-start'} button={<IconHorizontalDots className="opacity-80 hover:opacity-100" />}>
-                                                <ul className="!min-w-[150px]">
-                                                    <li>
-                                                        <button type="button">View Invoice</button>
-                                                    </li>
-                                                    <li>
-                                                        <button type="button">Download Invoice</button>
-                                                    </li>
-                                                </ul>
-                                            </Dropdown>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>
