@@ -1,17 +1,18 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '../../../../../db/connect';
-import { Review } from '../../../../models/Review';
-import { validateObjectId } from '../../../../../utils/validateObjectId';
+import { Review } from '../../../../models/Review';  // Asegúrate de que Review esté importado
 
 export async function GET(request: Request, { params }: { params: { movieId: string } }) {
   try {
+    // Esperar para asegurar que los parámetros se obtienen correctamente
+    const { movieId } = params;  // Usar destructuring para extraer el 'movieId'
+
+    // Conectar a la base de datos
     await connectToDatabase();
 
-    if (!validateObjectId(params.movieId)) {
-      return NextResponse.json({ message: 'ID de película no válido' }, { status: 400 });
-    }
+    // Buscar reseñas de la película usando 'movieId'
+    const reviews = await Review.find({ movie: movieId }).populate('user', 'username');
 
-    const reviews = await Review.find({ movie: params.movieId }).populate('user', 'username');
     return NextResponse.json(reviews);
   } catch (error) {
     console.error(error);

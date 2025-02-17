@@ -10,6 +10,12 @@ interface Movie {
   primaryTitle: string;
   primaryImage: string;
   description: string;
+  releaseDate: string;
+  genres: string[];
+  averageRating: number;
+  numVotes: number;
+  contentRating: string;
+  externalLinks: string[];
 }
 
 interface Review {
@@ -35,7 +41,7 @@ export default function MovieDetail() {
       try {
         console.log("Obteniendo detalles de la película...", id);
         const res = await axios.get(`/api/movies/${id}`);
-        setMovie(res.data.movie);
+        setMovie(res.data.movie);  // Asumimos que la respuesta contiene la clave `movie`
       } catch (error) {
         console.error("Error al obtener los detalles de la película:", error);
       }
@@ -43,8 +49,9 @@ export default function MovieDetail() {
 
     const fetchReviews = async () => {
       try {
-        //const res = await axios.get(`/api/reviews/movie/${id}`);
-        //setReviews(res.data);
+        const res = await axios.get(`/api/reviews/movie/${id}`);
+        setReviews(res.data);
+        console.log("Reseñas obtenidas:", res.data);
       } catch (error) {
         console.error("Error al obtener reseñas:", error);
       }
@@ -97,6 +104,32 @@ export default function MovieDetail() {
       <h1 className="text-3xl font-bold">{movie.primaryTitle}</h1>
       <img src={movie.primaryImage} alt={movie.primaryTitle} className="w-full h-96 object-cover my-4" />
       <p>{movie.description}</p>
+
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold">Información adicional</h3>
+        <ul className="list-none">
+          <li><strong>Géneros:</strong> {movie.genres.join(", ")}</li>
+          <li><strong>Calificación promedio:</strong> {movie.averageRating} ⭐</li>
+          <li><strong>Votos:</strong> {movie.numVotes}</li>
+          <li><strong>Clasificación de contenido:</strong> {movie.contentRating}</li>
+          <li><strong>Fecha de estreno:</strong> {movie.releaseDate}</li>
+        </ul>
+
+        {movie.externalLinks && movie.externalLinks.length > 0 && (
+          <div className="mt-4">
+            <h4 className="font-semibold">Enlaces externos</h4>
+            <ul className="list-none">
+              {movie.externalLinks.map((link, index) => (
+                <li key={index}>
+                  <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                    {link}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
 
       <div className="mt-6">
         <h2 className="text-xl font-bold">Reseñas</h2>
