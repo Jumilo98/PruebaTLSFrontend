@@ -12,7 +12,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">
+      <body className="main-section antialiased relative font-nunito text-sm font-normal">
         {children}
       </body>
     </html>

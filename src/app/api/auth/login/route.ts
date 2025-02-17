@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   await connectToDatabase();
 
   const { email, password } = await request.json();
-
+  
   const user = await User.findOne({ email });
   if (!user) {
     return NextResponse.json({ message: 'Credenciales inválidas' }, { status: 400 });
