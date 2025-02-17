@@ -40,7 +40,6 @@ export default function LoginPage() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      alertService.success("Iniciado sesión correctamente");
       router.push("/"); // Redirigir a la página principal
     } catch (error: any) {
       alertService.error(error.response?.data?.message || "Error al iniciar sesión");
