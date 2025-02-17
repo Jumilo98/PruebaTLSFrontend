@@ -1,101 +1,163 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+import Dropdown from '../../components/Dropdown';
+import IconCoffee from '../../components/IconCoffee';
+import IconCalendar from '../../components/IconCalendar';
+import IconMapPin from '../../components/IconMapPin';
+import IconMail from '../../components/IconMail';
+import IconPhone from '../../components/IconPhone';
+import IconTwitter from '../../components/IconTwitter';
+import IconDribbble from '../../components/IconDribbble';
+import IconGithub from '../../components/IconGithub';
+import IconHorizontalDots from '../../components/IconHorizontalDots';
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+interface User {
+    username: string;
+    email: string;
 }
+
+const Profile = () => {
+
+    return (
+        <div>
+            <div className="pt-5">
+                <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-5">
+                    <div className="panel">
+                        <div className="mb-5">
+                            <div className="flex flex-col justify-center items-center">
+                                <img src="/assets/profile-34.jpeg" alt="img" className="w-24 h-24 rounded-full object-cover  mb-5" />
+                                <p className="font-semibold text-primary text-xl">Jimmy Turner</p>
+                            </div>
+                            <ul className="mt-5 flex flex-col max-w-[160px] m-auto space-y-4 font-semibold text-white-dark">
+                                <li className="flex items-center gap-2">
+                                    <IconCoffee className="shrink-0" />
+                                    Web Developer
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <IconCalendar className="shrink-0" />
+                                    Jan 20, 1989
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <IconMapPin className="shrink-0" />
+                                    New York, USA
+                                </li>
+                                <li>
+                                    <button className="flex items-center gap-2">
+                                        <IconMail className="w-5 h-5 shrink-0" />
+                                        <span className="text-primary truncate">jimmy@gmail.com</span>
+                                    </button>
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    <IconPhone />
+                                    <span className="whitespace-nowrap" dir="ltr">
+                                        +1 (530) 555-12121
+                                    </span>
+                                </li>
+                            </ul>
+                            <ul className="mt-7 flex items-center justify-center gap-2">
+                                <li>
+                                    <button className="btn btn-info flex items-center justify-center rounded-full w-10 h-10 p-0">
+                                        <IconTwitter className="w-5 h-5" />
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="btn btn-danger flex items-center justify-center rounded-full w-10 h-10 p-0">
+                                        <IconDribbble />
+                                    </button>
+                                </li>
+                                <li>
+                                    <button className="btn btn-dark flex items-center justify-center rounded-full w-10 h-10 p-0">
+                                        <IconGithub />
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="panel lg:col-span-2 xl:col-span-3">
+                        <div className="flex items-center justify-between mb-5">
+                            <h5 className="font-semibold text-lg dark:text-white-light">Payment History</h5>
+                        </div>
+                        <div>
+                            <div className="border-b border-[#ebedf2] dark:border-[#1b2e4b]">
+                                <div className="flex items-center justify-between py-2">
+                                    <h6 className="text-[#515365] font-semibold dark:text-white-dark">
+                                        March
+                                        <span className="block text-white-dark dark:text-white-light">Pro Membership</span>
+                                    </h6>
+                                    <div className="flex items-start justify-between ltr:ml-auto rtl:mr-auto">
+                                        <p className="font-semibold">90%</p>
+                                        <div className="dropdown ltr:ml-4 rtl:mr-4">
+                                            <Dropdown
+                                                offset={[0, 5]}
+                                                placement={'bottom-start'}
+                                                btnClassName="hover:text-primary"
+                                                button={<IconHorizontalDots className="opacity-80 hover:opacity-100" />}
+                                            >
+                                                <ul className="!min-w-[150px]">
+                                                    <li>
+                                                        <button type="button">View Invoice</button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button">Download Invoice</button>
+                                                    </li>
+                                                </ul>
+                                            </Dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="border-b border-[#ebedf2] dark:border-[#1b2e4b]">
+                                <div className="flex items-center justify-between py-2">
+                                    <h6 className="text-[#515365] font-semibold dark:text-white-dark">
+                                        February
+                                        <span className="block text-white-dark dark:text-white-light">Pro Membership</span>
+                                    </h6>
+                                    <div className="flex items-start justify-between ltr:ml-auto rtl:mr-auto">
+                                        <p className="font-semibold">90%</p>
+                                        <div className="dropdown ltr:ml-4 rtl:mr-4">
+                                            <Dropdown offset={[0, 5]} placement={'bottom-start'} button={<IconHorizontalDots className="opacity-80 hover:opacity-100" />}>
+                                                <ul className="!min-w-[150px]">
+                                                    <li>
+                                                        <button type="button">View Invoice</button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button">Download Invoice</button>
+                                                    </li>
+                                                </ul>
+                                            </Dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div className="flex items-center justify-between py-2">
+                                    <h6 className="text-[#515365] font-semibold dark:text-white-dark">
+                                        January
+                                        <span className="block text-white-dark dark:text-white-light">Pro Membership</span>
+                                    </h6>
+                                    <div className="flex items-start justify-between ltr:ml-auto rtl:mr-auto">
+                                        <p className="font-semibold">90%</p>
+                                        <div className="dropdown ltr:ml-4 rtl:mr-4">
+                                            <Dropdown offset={[0, 5]} placement={'bottom-start'} button={<IconHorizontalDots className="opacity-80 hover:opacity-100" />}>
+                                                <ul className="!min-w-[150px]">
+                                                    <li>
+                                                        <button type="button">View Invoice</button>
+                                                    </li>
+                                                    <li>
+                                                        <button type="button">Download Invoice</button>
+                                                    </li>
+                                                </ul>
+                                            </Dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Profile;
