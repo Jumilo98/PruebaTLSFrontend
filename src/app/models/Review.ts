@@ -4,7 +4,7 @@ const reviewSchema = new Schema({
   content: { type: String, required: true },
   rating: { type: Number, required: true, min: 1, max: 5 },
   movie: { type: String, required: true },
-  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },  // Referencia al modelo 'User'
   createdAt: { type: Date, default: Date.now },
 });
 

@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '../../components/MovieCard';
+import { alertService } from '@/utils/alerts';
 
 interface Movie {
   id: string;
@@ -36,7 +37,7 @@ export default function SearchResults() {
           setMovies([]);
         }
       } catch (error) {
-        console.error('Error fetching movies:', error);
+        alertService.error('Error al cargar las películas');
         setError('Error al cargar las películas');
       } finally {
         setLoading(false);

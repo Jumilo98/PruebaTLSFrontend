@@ -42,7 +42,7 @@ export default function MovieDetail() {
         const res = await axios.get(`/api/movies/${id}`);
         setMovie(res.data.movie);  // Asumimos que la respuesta contiene la clave `movie`
       } catch (error) {
-        console.error("Error al obtener los detalles de la película:", error);
+        alertService.error("Error al obtener la información de la película.");
       }
     };
 
@@ -51,7 +51,7 @@ export default function MovieDetail() {
         const res = await axios.get(`/api/reviews/movie/${id}`);
         setReviews(res.data);
       } catch (error) {
-        console.error("Error al obtener reseñas:", error);
+        alertService.error("Error al obtener las reseñas de la película.");
       }
     };
 
@@ -60,7 +60,7 @@ export default function MovieDetail() {
       try {
         await Promise.all([fetchMovie(), fetchReviews()]);
       } catch (error) {
-        console.error("Error al cargar los datos:", error);
+        alertService.error("Error al cargar la información de la película.");
       }
       setLoading(false);
     };
@@ -90,7 +90,7 @@ export default function MovieDetail() {
         alertService.error("Error al enviar la reseña.");
       }
     } catch (error) {
-      console.error("Error al enviar la reseña:", error);
+      alertService.error("Error al enviar la reseña.");
     }
   };
 
@@ -162,7 +162,7 @@ export default function MovieDetail() {
           reviews.map((review, index) => (
             <div key={index} className="border-b py-2">
               <p>
-                <strong>{review.user || "Usuario anónimo"}</strong> - {review.rating}⭐
+                <strong>{review.user?.username || "Usuario anónimo"}</strong> - {review.rating}⭐
               </p>
               <p>{review.content}</p>
             </div>

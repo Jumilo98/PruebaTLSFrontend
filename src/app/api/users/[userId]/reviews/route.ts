@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '../../../../../db/connect';
 import { Review } from '../../../../models/Review';
+import { User } from '../../../../models/User';  // Asegúrate de importar el modelo User
 
 export async function GET(request: Request, { params }: { params: { userId: string } }) {
   try {

@@ -9,30 +9,35 @@ import IconUser from './IconUser';
 import IconLogout from './IconLogout';
 import { usePathname } from 'next/navigation';
 import {useRouter} from 'next/navigation';
-
-interface User {
-    username: string;
-    email: string;
-}
+import { alertService } from '@/utils/alerts';
 
 export default function Header() {
-    const pathname = usePathname();
     const router = useRouter();
+    const pathname = usePathname();
 
     const [user, setUser] = useState<User | null>(null);
     const [search, setSearch] = useState(false);
     const dropdownRef = useRef(null);
     const [query, setQuery] = useState("");
 
+    const handleLogout = () => {
+        // Eliminar el token y los datos del usuario del localStorage
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        alertService.success("Sesión cerrada correctamente");
+        // Redirigir al usuario a la página de inicio de sesión
+        router.push("/login");
+    };
+
     const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (query.trim()) {
-        router.push(`/search?q=${query}`);
-    }
+        e.preventDefault();
+        if (query.trim()) {
+            router.push(`/search?q=${query}`);
+        }
     };
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
+        const storedUser = localStorage.getItem("user");
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         }
@@ -133,13 +138,13 @@ export default function Header() {
                                         </Link>
                                     </li>
                                     <li className="border-t border-white-light dark:border-white-light/10">
-                                        <Link
-                                            href="/login"
+                                        <button
+                                            onClick={handleLogout} // Llamamos a la función handleLogout
                                             className="flex items-center px-4 py-3 text-danger hover:text-danger"
                                         >
                                             <IconLogout className="w-4.5 h-4.5 mr-2 rotate-90 shrink-0" />
                                             Cerrar Sesión
-                                        </Link>
+                                        </button>
                                     </li>
                                 </ul>
                             </Dropdown>

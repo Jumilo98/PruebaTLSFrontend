@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '../components/MovieCard';
+import { alertService } from '@/utils/alerts';
 
 interface Movie {
   id: string;
@@ -21,7 +22,7 @@ export default function Home() {
         const response = await axios.get('/api/movies');
         setMovies(response.data);
       } catch (error) {
-        console.error('Error al obtener las películas:', error);
+        alertService.error('Error al obtener las películas');
       } finally {
         setLoading(false);
       }
