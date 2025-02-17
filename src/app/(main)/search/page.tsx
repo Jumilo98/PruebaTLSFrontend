@@ -28,8 +28,8 @@ export default function SearchResults() {
       setError('');
 
       try {
-        const response = await axios.get(`/api/movies?q=${query}`);  // Pasamos el parámetro 'q' a la URL
-        
+        const response = await axios.get(`/api/movies/search?q=${query}`);  // Pasamos el parámetro 'q' a la URL
+        console.log('Response:', response.data);
         // Verificamos si la respuesta tiene los datos correctos
         if (response.data && response.data.movies) {
           setMovies(response.data.movies);

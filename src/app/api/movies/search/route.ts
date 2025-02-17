@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server';
 import https from 'https';
 
 export async function GET(request: Request) {
+  // Extraer el parámetro 'q' directamente desde la URL de la petición
   const url = new URL(request.url);
-  const query = url.searchParams.get('query') || '';  // Obtener parámetro 'query'
+  const query = url.searchParams.get('q') || '';  // Obtenemos 'q' (parámetro de búsqueda)
 
   if (!query) {
     return NextResponse.json({ message: 'Falta el parámetro de búsqueda' }, { status: 400 });
@@ -14,7 +15,7 @@ export async function GET(request: Request) {
       method: 'GET',
       hostname: 'imdb236.p.rapidapi.com',
       port: null,
-      path: `/imdb/autocomplete?query=${encodeURIComponent(query)}`,  // Endpoint con el parámetro 'query'
+      path: `/imdb/autocomplete?query=${encodeURIComponent(query)}`,  // Asegúrate de usar 'query'
       headers: {
         'x-rapidapi-key': '406c35f718msh84ec2e173337740p17f35fjsn949d9cde7620',
         'x-rapidapi-host': 'imdb236.p.rapidapi.com',
@@ -33,12 +34,12 @@ export async function GET(request: Request) {
         
         try {
           const movies = JSON.parse(body.toString());
+          console.log('Películas:', movies);
           
-          // Verificar si la respuesta tiene una estructura válida
+          // Verificar si la respuesta es válida
           if (Array.isArray(movies)) {
-            return resolve(NextResponse.json({ movies }));  // Devolver la lista de películas
+            return resolve(NextResponse.json({ movies }));
           } else {
-            // Si no es un array de películas, devolver un error
             return reject(NextResponse.json({ message: 'No se encontraron resultados.' }, { status: 404 }));
           }
         } catch (error) {
