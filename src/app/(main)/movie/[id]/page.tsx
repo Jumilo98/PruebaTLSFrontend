@@ -33,9 +33,17 @@ export default function MovieDetail() {
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(5);
   const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
+
+    // Obtener el usuario actual desde localStorage
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      setCurrentUser(user.username);  // Asignamos el nombre de usuario al estado
+    }
 
     const fetchMovie = async () => {
       try {
@@ -162,7 +170,7 @@ export default function MovieDetail() {
           reviews.map((review, index) => (
             <div key={index} className="border-b py-2">
               <p>
-                <strong>{review.user?.username || "Usuario anónimo"}</strong> - {review.rating}⭐
+                <strong>{review.user?.username || currentUser || "Usuario anónimo"}</strong> - {review.rating}⭐
               </p>
               <p>{review.content}</p>
             </div>
