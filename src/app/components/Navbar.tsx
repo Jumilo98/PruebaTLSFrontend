@@ -134,7 +134,7 @@ export default function Header() {
                                     </li>
                                     <li className="border-t border-white-light dark:border-white-light/10">
                                         <Link
-                                            href="/iniciosesion"
+                                            href="/login"
                                             className="flex items-center px-4 py-3 text-danger hover:text-danger"
                                         >
                                             <IconLogout className="w-4.5 h-4.5 mr-2 rotate-90 shrink-0" />

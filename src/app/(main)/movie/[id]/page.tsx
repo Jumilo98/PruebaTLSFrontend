@@ -39,7 +39,6 @@ export default function MovieDetail() {
 
     const fetchMovie = async () => {
       try {
-        console.log("Obteniendo detalles de la película...", id);
         const res = await axios.get(`/api/movies/${id}`);
         setMovie(res.data.movie);  // Asumimos que la respuesta contiene la clave `movie`
       } catch (error) {
@@ -88,7 +87,7 @@ export default function MovieDetail() {
         setComment("");
         setRating(5);
       } else {
-        alert("Error al publicar la reseña.");
+        alertService.error("Error al enviar la reseña.");
       }
     } catch (error) {
       console.error("Error al enviar la reseña:", error);
