@@ -1,6 +1,6 @@
-# **Biblioteca API REST - Proyecto Yii2 con MongoDB y JWT (PruebaTLS Backend Jimmy Granizo)**
+# **MovieReview App Next - Proyecto Next/React con MongoDB y JWT (PruebaTLS Frontend Jimmy Granizo)**
 
-Este proyecto es una API REST para gestionar una biblioteca virtual de libros y autores utilizando el framework Yii2 y la base de datos MongoDB. La API permite administrar libros, autores, y sus relaciones, y está protegida por autenticación mediante JWT.
+Este proyecto de almacenamiento de Usuarios y reseñas utilizando el API IMDB (rapid api), para visuzalir las peliculas, segura por autenticación mediante JWT, Puede registarse, logearse, ver peliculas, buscar, escribir reseñas y ver un historial de las mismas del usuario y de otros.
 
 ## **Estructura del Proyecto**
 
