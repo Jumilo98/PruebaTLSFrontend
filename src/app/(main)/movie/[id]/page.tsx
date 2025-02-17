@@ -51,7 +51,6 @@ export default function MovieDetail() {
       try {
         const res = await axios.get(`/api/reviews/movie/${id}`);
         setReviews(res.data);
-        console.log("Reseñas obtenidas:", res.data);
       } catch (error) {
         console.error("Error al obtener reseñas:", error);
       }

@@ -3,16 +3,16 @@ import { connectToDatabase } from '../../../../../db/connect';
 import { Review } from '../../../../models/Review';  // Asegúrate de que Review esté importado
 
 export async function GET(request: Request, { params }: { params: { movieId: string } }) {
-  try {
-    // Esperar para asegurar que los parámetros se obtienen correctamente
-    const { movieId } = params;  // Usar destructuring para extraer el 'movieId'
+  // Debes esperar a que los parámetros se extraigan correctamente
+  const { movieId } = await params;  // Esperar a obtener 'movieId' desde los parámetros de la ruta
 
+  try {
     // Conectar a la base de datos
     await connectToDatabase();
 
     // Buscar reseñas de la película usando 'movieId'
     const reviews = await Review.find({ movie: movieId }).populate('user', 'username');
-
+    
     return NextResponse.json(reviews);
   } catch (error) {
     console.error(error);

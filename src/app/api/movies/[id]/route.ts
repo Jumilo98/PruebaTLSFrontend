@@ -2,9 +2,10 @@ import { NextResponse } from 'next/server';
 import https from 'https';
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const movieId = params.id;  // Obtener el 'id' directamente desde el path de la URL
+  // Debes esperar a que los parámetros se extraigan correctamente
+  const { id } = await params;  // Esperar a obtener 'id' desde los parámetros de la ruta
 
-  if (!movieId) {
+  if (!id) {
     return NextResponse.json({ message: 'Falta el ID de la película' }, { status: 400 });
   }
 
@@ -13,7 +14,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
       method: 'GET',
       hostname: 'imdb236.p.rapidapi.com',
       port: null,
-      path: `/imdb/${encodeURIComponent(movieId)}`,  // Usamos el 'movieId' como el ID de la película
+      path: `/imdb/${encodeURIComponent(id)}`,  // Usamos el 'id' como el ID de la película
       headers: {
         'x-rapidapi-key': '406c35f718msh84ec2e173337740p17f35fjsn949d9cde7620',
         'x-rapidapi-host': 'imdb236.p.rapidapi.com',
@@ -32,9 +33,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
         try {
           const movie = JSON.parse(body.toString());
-          console.log('Película:', movie);
 
-          // Verificar si la respuesta es válida
           if (movie) {
             return resolve(NextResponse.json({ movie }));
           } else {
