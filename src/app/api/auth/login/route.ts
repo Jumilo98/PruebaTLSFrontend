@@ -23,5 +23,5 @@ export async function POST(request: Request) {
     expiresIn: '1h',
   });
 
-  return NextResponse.json({ token });
+  return NextResponse.json({ token , user });
 }

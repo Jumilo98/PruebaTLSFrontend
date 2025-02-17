@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Inicio de sesión",
-  description: "Inicia sesión en tu cuenta",
+  title: "Bienvenido",
+  description: "Bienvenido a la aplicación",
 };
 
 export default function RootLayout({

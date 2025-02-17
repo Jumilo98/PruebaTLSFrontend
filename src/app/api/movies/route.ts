@@ -1,10 +1,37 @@
 import { NextResponse } from 'next/server';
-import { connectToDatabase } from '../../../db/connect';
-import { Movie } from '../../models/Movie';
+import https from 'https';
 
 export async function GET() {
-  await connectToDatabase();
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: 'GET',
+      hostname: 'imdb236.p.rapidapi.com',
+      port: null,
+      path: '/imdb/top250-movies',
+      headers: {
+        'x-rapidapi-key': '406c35f718msh84ec2e173337740p17f35fjsn949d9cde7620',
+        'x-rapidapi-host': 'imdb236.p.rapidapi.com',
+      },
+    };
 
-  const movies = await Movie.find({});
-  return NextResponse.json(movies);
+    const req = https.request(options, (res) => {
+      const chunks: any[] = [];
+
+      res.on('data', (chunk) => {
+        chunks.push(chunk);
+      });
+
+      res.on('end', () => {
+        const body = Buffer.concat(chunks);
+        const movies = JSON.parse(body.toString());
+        resolve(NextResponse.json(movies));
+      });
+    });
+
+    req.on('error', (error) => {
+      reject(NextResponse.json({ message: 'Error al obtener las películas' }, { status: 500 }));
+    });
+
+    req.end();
+  });
 }

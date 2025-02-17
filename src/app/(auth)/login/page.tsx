@@ -5,10 +5,12 @@ import * as Yup from 'yup';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { alertService } from '@/utils/alerts';
+import Head from "next/head";
 import Link from "next/link";
 import axios from "axios";
 import IconMail from "../../components/IconMail";
 import IconLockDots from "../../components/IconLockDots";
+
 
 interface LoginFormValues {
   email: string;
@@ -35,6 +37,7 @@ export default function LoginPage() {
     setIsSubmitting(true);
     try {
       const response = await axios.post("/api/auth/login", values);
+      console.log(response.data);
       const { token, user } = response.data;
 
       localStorage.setItem("token", token);
