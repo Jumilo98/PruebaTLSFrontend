@@ -3,11 +3,20 @@ import Swal from 'sweetalert2';
 const showAlert = (type: 'success' | 'error' | 'info' | 'warning', message: string) => {
   Swal.fire({
     toast: true,
-    position: 'top',
+    position: 'top-end',
     icon: type,
+    iconColor: 'white',
     title: message,
+    customClass: {
+      popup: 'colored-toast',
+    },
     showConfirmButton: false,
-    timer: 5000,
+    timerProgressBar: true,
+    timer: 4000,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    }
   });
 };
 
