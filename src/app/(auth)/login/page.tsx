@@ -37,7 +37,6 @@ export default function LoginPage() {
     setIsSubmitting(true);
     try {
       const response = await axios.post("/api/auth/login", values);
-      console.log(response.data);
       const { token, user } = response.data;
 
       localStorage.setItem("token", token);

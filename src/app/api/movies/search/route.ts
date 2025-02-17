@@ -34,7 +34,6 @@ export async function GET(request: Request) {
         
         try {
           const movies = JSON.parse(body.toString());
-          console.log('Películas:', movies);
           
           // Verificar si la respuesta es válida
           if (Array.isArray(movies)) {
