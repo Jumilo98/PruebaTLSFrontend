@@ -130,7 +130,7 @@ export default function Header() {
                                     </li>
                                     <li>
                                         <Link
-                                            href="/usuario"
+                                            href="/profile"
                                             className="flex items-center px-4 py-2 hover:text-primary dark:hover:text-white"
                                         >
                                             <IconUser className="w-4.5 h-4.5 mr-2 shrink-0" />
