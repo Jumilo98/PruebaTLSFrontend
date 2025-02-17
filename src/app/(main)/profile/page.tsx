@@ -20,7 +20,7 @@ interface User {
 interface Review {
     content: string;
     rating: number;
-    movieId: string;
+    movie: string;
     createdAt: string;
 }
 
@@ -127,7 +127,7 @@ const Profile = () => {
                                 reviews.map((review) => (
                                     <div key={review._id} className="border-b border-[#ebedf2] dark:border-[#1b2e4b] py-2">
                                         <h6 className="text-[#515365] font-semibold dark:text-white-dark">
-                                            Película: {review.movieId}
+                                            Película: {review.movie}
                                         </h6>
                                         <p>Calificación: {review.rating} ⭐</p>
                                         <p>{review.content}</p>
