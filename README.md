@@ -104,7 +104,7 @@ Primero, clona el repositorio en tu máquina local. Abre una terminal y ejecuta 
 
 ```bash
 git clone https://github.com/Jumilo98/PruebaTLSFrontend.git
-cd PruebaTLSBackend
+cd PruebaTLSFrontend
 ```
 ### **Paso 2: Instalar las Dependencias**
 
