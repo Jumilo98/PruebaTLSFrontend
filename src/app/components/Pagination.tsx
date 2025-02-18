@@ -12,7 +12,7 @@ const Pagination: React.FC<PaginationProps> = ({ page, totalPages, onPageChange 
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <div className="mb-5">
+    <div className="mb-0">
       <div className="flex justify-center flex-col w-full">
         <ul className="inline-flex items-center m-auto mb-4">
           {/* Botón "Primera Página" */}

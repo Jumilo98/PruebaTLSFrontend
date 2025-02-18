@@ -17,11 +17,12 @@ interface Movie {
 export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1); // Estado de la página actual
-  const [totalPages, setTotalPages] = useState(1); // Total de páginas
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isPaginating, setIsPaginating] = useState(false);
   const router = useRouter();
 
-  // Verificar autenticación
+  // Verificar autenticación solo al inicio
   useEffect(() => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem('user');
@@ -33,7 +34,8 @@ export default function Home() {
 
   // Obtener películas con paginación
   const fetchMovies = useCallback(async () => {
-    setLoading(true);
+    if (page > 1) setIsPaginating(true);
+
     try {
       const { data } = await axios.get(`/api/movies?page=${page}&limit=12`);
 
@@ -47,6 +49,7 @@ export default function Home() {
       alertService.error(error.response?.data?.message || 'Error al obtener las películas');
     } finally {
       setLoading(false);
+      setIsPaginating(false);
     }
   }, [page]);
 
@@ -63,28 +66,33 @@ export default function Home() {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-center">🎬 Películas Populares</h1>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+      {/* Panel del Encabezado */}
+      <div className="panel mb-6 text-center">
+        <h1 className="text-2xl sm:text-3xl font-bold text-primary">Películas Populares</h1>
+      </div>
 
-       {/* Paginación Componetizada */}
-       <Pagination
-          page={page}
-          totalPages={totalPages}
-          onPageChange={(newPage) => setPage(newPage)}
-        />
+      {/* Paginación Arriba (Ahora con scroll horizontal en móviles) */}
+      <div className="flex justify-center">
+        <div className="overflow-x-auto w-full">
+          <Pagination page={page} totalPages={totalPages} onPageChange={(newPage) => setPage(newPage)} />
+        </div>
+      </div>
 
-      {movies.length === 0 ? (
-        <p className="text-center text-gray-500">No hay películas disponibles.</p>
-      ) : (
-        <>         
-          {/* Grid de Películas */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {movies.map((movie) => (
-              <MovieCard key={movie.id} movie={movie} />
-            ))}
-          </div>
-        </>
-      )}
+      {/* Panel de Películas */}
+      <div className="panel">
+        <div className={`transition-opacity ${isPaginating ? 'opacity-50' : 'opacity-100'}`}>
+          {movies.length === 0 ? (
+            <p className="text-center text-gray-500">No hay películas disponibles.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {movies.map((movie) => (
+                <MovieCard key={movie.id} movie={movie} />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
