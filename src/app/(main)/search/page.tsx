@@ -1,9 +1,10 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import MovieCard from '../../components/MovieCard';
+import Pagination from '../../components/Pagination';
 import { alertService } from '@/utils/alerts';
 
 interface Movie {
@@ -20,53 +21,73 @@ function SearchResultsContent() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isPaginating, setIsPaginating] = useState(false);
+
+  // Función para buscar películas con paginación
+  const fetchMovies = useCallback(async () => {
+    if (!query) return;
+
+    setIsPaginating(true);
+    setLoading(true);
+    setError('');
+
+    try {
+      const { data } = await axios.get(`/api/movies/search?q=${query}&page=${page}&limit=12`);
+
+      if (data && data.movies) {
+        setMovies(data.movies);
+        setTotalPages(data.totalPages || 1);
+      } else {
+        setMovies([]);
+      }
+    } catch (error) {
+      alertService.error('Error al cargar las películas');
+      setError('Error al cargar las películas');
+    } finally {
+      setLoading(false);
+      setIsPaginating(false);
+    }
+  }, [query, page]);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      if (!query) return;  // No hacer nada si no hay query
-
-      setLoading(true);
-      setError('');
-
-      try {
-        const response = await axios.get(`/api/movies/search?q=${query}`);  // Pasamos el parámetro 'q' a la URL
-        // Verificamos si la respuesta tiene los datos correctos
-        if (response.data && response.data.movies) {
-          setMovies(response.data.movies);
-        } else {
-          setMovies([]);
-        }
-      } catch (error) {
-        alertService.error('Error al cargar las películas');
-        setError('Error al cargar las películas');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchMovies();
-  }, [query]);
+  }, [fetchMovies]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">
-        Resultados de búsqueda para: {query}
-      </h1>
+    <div className="container mx-auto p-6">
+      {/* Panel del Encabezado */}
+      <div className="panel mb-3">
+        <h1 className="text-3xl font-bold text-center text-primary">
+          🎬 Resultados para: "{query}"
+        </h1>
 
-      {loading && <p className="text-center">Cargando...</p>}
-      
-      {error && (
-        <p className="text-red-500 text-center">{error}</p>
-      )}
+        {/* Paginación Arriba */}
+        <div className="flex justify-center mt-4">
+          <Pagination page={page} totalPages={totalPages} onPageChange={(newPage) => setPage(newPage)} />
+        </div>
+      </div>
 
-      {!loading && !error && movies.length === 0 && (
-        <p className="text-center">No se encontraron películas</p>
-      )}
+      {/* Panel de Películas */}
+      <div className="panel">        
+        <div className={`transition-opacity ${isPaginating ? 'opacity-50' : 'opacity-100'}`}>
+          {loading && <p className="text-center text-gray-500">Cargando...</p>}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+          {error && (
+            <p className="text-red-500 text-center">{error}</p>
+          )}
+
+          {!loading && !error && movies.length === 0 && (
+            <p className="text-center text-gray-500">No se encontraron películas.</p>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {movies.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -74,7 +95,7 @@ function SearchResultsContent() {
 
 export default function SearchResults() {
   return (
-    <Suspense fallback={<div>Cargando...</div>}>
+    <Suspense fallback={<div className="text-center">Cargando...</div>}>
       <SearchResultsContent />
     </Suspense>
   );

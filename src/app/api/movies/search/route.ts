@@ -1,56 +1,42 @@
 import { NextResponse } from 'next/server';
-import https from 'https';
+import axios from 'axios';
 
-export async function GET(request: Request) {
-  // Extraer el parámetro 'q' directamente desde la URL de la petición
-  const url = new URL(request.url);
-  const query = url.searchParams.get('q') || '';  // Obtenemos 'q' (parámetro de búsqueda)
+export async function GET(req: Request) {
+  try {
+    // Extraer parámetros de la URL
+    const { searchParams } = new URL(req.url);
+    const query = searchParams.get("q") || ""; // Parámetro de búsqueda
+    const page = parseInt(searchParams.get("page") || "1", 10); // Página actual
+    const limit = parseInt(searchParams.get("limit") || "12", 10); // Resultados por página
 
-  if (!query) {
-    return NextResponse.json({ message: 'Falta el parámetro de búsqueda' }, { status: 400 });
-  }
-
-  return new Promise((resolve, reject) => {
-    const options = {
-      method: 'GET',
-      hostname: 'imdb236.p.rapidapi.com',
-      port: null,
-      path: `/imdb/autocomplete?query=${encodeURIComponent(query)}`,  // Asegúrate de usar 'query'
+    if (!query) {
+      return NextResponse.json({ message: "Falta el parámetro de búsqueda" }, { status: 400 });
+    }
+    
+    // Llamada a la API de IMDB con Axios
+    const response = await axios.get("https://imdb236.p.rapidapi.com/imdb/autocomplete", {
+      params: { query },
       headers: {
-        'x-rapidapi-key': '406c35f718msh84ec2e173337740p17f35fjsn949d9cde7620',
-        'x-rapidapi-host': 'imdb236.p.rapidapi.com',
+        "x-rapidapi-key": "406c35f718msh84ec2e173337740p17f35fjsn949d9cde7620",
+        "x-rapidapi-host": "imdb236.p.rapidapi.com",
       },
-    };
-
-    const req = https.request(options, (res) => {
-      const chunks: any[] = [];
-
-      res.on('data', (chunk) => {
-        chunks.push(chunk);
-      });
-
-      res.on('end', () => {
-        const body = Buffer.concat(chunks);
-        
-        try {
-          const movies = JSON.parse(body.toString());
-          
-          // Verificar si la respuesta es válida
-          if (Array.isArray(movies)) {
-            return resolve(NextResponse.json({ movies }));
-          } else {
-            return reject(NextResponse.json({ message: 'No se encontraron resultados.' }, { status: 404 }));
-          }
-        } catch (error) {
-          return reject(NextResponse.json({ message: 'Error al procesar la respuesta de la API' }, { status: 500 }));
-        }
-      });
     });
 
-    req.on('error', (error) => {
-      return reject(NextResponse.json({ message: 'Error al obtener las películas' }, { status: 500 }));
-    });
+    // **Siempre devuelve un array**, así que lo tomamos directamente
+    const movies = Array.isArray(response.data) ? response.data : [];
 
-    req.end();
-  });
+    // Aplicar paginación manualmente
+    const totalMovies = movies.length;
+    const totalPages = Math.ceil(totalMovies / limit);
+    const paginatedMovies = movies.slice((page - 1) * limit, page * limit);
+
+    return NextResponse.json({
+      movies: paginatedMovies,
+      totalMovies,
+      currentPage: page,
+      totalPages,
+    });
+  } catch (error) {
+    return NextResponse.json({ message: "Error al obtener las películas" }, { status: 500 });
+  }
 }
