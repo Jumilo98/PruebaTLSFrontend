@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useEffect, useState, useRef } from 'react';
 import Dropdown from './Dropdown';
 import IconSearch from './IconSearch';
-import IconXCircle from './IconXCircle';
 import IconUser from './IconUser';
 import IconLogout from './IconLogout';
 import { usePathname, useRouter } from 'next/navigation';
@@ -41,14 +40,18 @@ export default function Header() {
     };
 
     return (
-        <header className="z-40 bg-white shadow-sm dark:bg-black">
-            <div className="relative flex w-full items-center px-5 py-2.5">
+        <header className="sticky top-0 z-50 bg-white shadow-md dark:bg-black">
+            <div className="relative flex w-full items-center px-4 sm:px-5 py-2.5">
                 
                 {/* 🏠 Logo */}
-                <div className="hidden lg:flex items-center">
+                <div className="flex items-center">
                     <Link href="/" className="main-logo flex items-center">
-                        <img className="w-24 -ml-1 inline" src="/images/auth/logo.png" alt="logo" />
-                        <span className="text-2xl ml-1.5 font-semibold hidden md:inline dark:text-white-light transition-all">
+                        <img 
+                            className="w-20 sm:w-24 transition-all duration-300" 
+                            src="/images/auth/logo.png" 
+                            alt="logo" 
+                        />
+                        <span className="text-xl sm:text-2xl ml-1.5 font-semibold hidden md:inline dark:text-white-light transition-all">
                             MovieReviews
                         </span>
                     </Link>
@@ -79,22 +82,22 @@ export default function Header() {
                         btnClassName="relative group block"
                         button={
                             <img
-                                className="w-9 h-9 rounded-full object-cover group-hover:opacity-80"
+                                className="w-8 sm:w-9 h-8 sm:h-9 rounded-full object-cover group-hover:opacity-80 transition-all duration-300"
                                 src="/images/auth/user.png"
                                 alt="User Profile"
                             />
                         }
                     >
-                        <ul className="text-dark dark:text-white-dark py-2 w-[230px] font-semibold bg-white dark:bg-[#1b2e4b] shadow-lg rounded-lg">
+                        <ul className="text-dark dark:text-white-dark py-2 w-[200px] sm:w-[230px] font-semibold bg-white dark:bg-[#1b2e4b] shadow-lg rounded-lg">
                             <li className="px-4 py-4 flex items-center">
                                 <img
-                                    className="rounded-md w-10 h-10 object-cover"
+                                    className="rounded-md w-9 h-9 object-cover"
                                     src="/images/auth/user.png"
                                     alt="User Avatar"
                                 />
-                                <div className="pl-4 truncate">
-                                    <h4 className="text-base">{user?.username || "Usuario"}</h4>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">{user?.email || "Sin correo"}</p>
+                                <div className="pl-3 truncate">
+                                    <h4 className="text-sm sm:text-base">{user?.username || "Usuario"}</h4>
+                                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{user?.email || "Sin correo"}</p>
                                 </div>
                             </li>
                             <li>
@@ -102,7 +105,7 @@ export default function Header() {
                                     href="/profile"
                                     className="flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                                 >
-                                    <IconUser className="w-5 h-5 mr-2" />
+                                    <IconUser className="w-4 sm:w-5 h-4 sm:h-5 mr-2" />
                                     Perfil
                                 </Link>
                             </li>
@@ -111,7 +114,7 @@ export default function Header() {
                                     onClick={handleLogout}
                                     className="flex items-center w-full px-4 py-3 text-danger hover:bg-gray-100 dark:hover:bg-gray-700"
                                 >
-                                    <IconLogout className="w-5 h-5 mr-2" />
+                                    <IconLogout className="w-4 sm:w-5 h-4 sm:h-5 mr-2" />
                                     Cerrar Sesión
                                 </button>
                             </li>
