@@ -1,4 +1,12 @@
-const IconClock = ({ className, fill = false, duotone = true }) => {
+import React from 'react';
+
+interface IconClockProps {
+    className?: string;
+    fill?: boolean;
+    duotone?: boolean;
+}
+
+const IconClock: React.FC<IconClockProps> = ({ className, fill = false, duotone = true }) => {
     return (
         <>
             {!fill ? (

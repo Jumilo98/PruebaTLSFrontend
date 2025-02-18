@@ -13,7 +13,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
     const reviews = await Review.find({ user: id }).populate('movie', 'title');
     return NextResponse.json(reviews);
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ message: 'Error al obtener las reseñas del usuario' }, { status: 500 });
   }
 }

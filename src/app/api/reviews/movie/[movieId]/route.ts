@@ -14,7 +14,6 @@ export async function GET(request: Request, { params }: { params: { movieId: str
     const reviews = await Review.find({ movie: movieId }).populate('user', 'username');
     return NextResponse.json(reviews);
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ message: 'Error al obtener las reseñas' }, { status: 500 });
   }
 }
@@ -48,7 +47,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ message: 'Reseña creada exitosamente', review }, { status: 201 });
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ message: 'Error al crear la reseña' }, { status: 500 });
   }
 }

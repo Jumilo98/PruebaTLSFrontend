@@ -10,6 +10,7 @@ import IconPhone from '../../components/IconPhone';
 import IconTwitter from '../../components/IconTwitter';
 import IconGithub from '../../components/IconGithub';
 import axios from 'axios';
+import { alertService } from '@/utils/alerts';
 
 interface User {
     _id: number
@@ -53,7 +54,7 @@ const Profile = () => {
                 setReviews(response.data); // Asumimos que la respuesta contiene las reseñas del usuario
                 setReviewsLoaded(true); // Marcar como cargadas las reseñas
             } catch (error) {
-                console.error('Error al obtener las reseñas:', error);
+               alertService.error('Error al cargar las reseñas');
             }
         };
 

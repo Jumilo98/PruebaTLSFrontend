@@ -1,4 +1,12 @@
-const IconCalendar = ({ className, fill = false, duotone = true }) => {
+import React from 'react';
+
+interface IconCalendarProps {
+  className?: string;
+  fill?: boolean;
+  duotone?: boolean;
+}
+
+const IconCalendar: React.FC<IconCalendarProps> = ({ className, fill = false, duotone = true }) => {
     return (
         <>
             {!fill ? (

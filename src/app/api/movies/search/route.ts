@@ -42,14 +42,12 @@ export async function GET(request: Request) {
             return reject(NextResponse.json({ message: 'No se encontraron resultados.' }, { status: 404 }));
           }
         } catch (error) {
-          console.error('Error al parsear la respuesta:', error);
           return reject(NextResponse.json({ message: 'Error al procesar la respuesta de la API' }, { status: 500 }));
         }
       });
     });
 
     req.on('error', (error) => {
-      console.error('Error al obtener las películas:', error);
       return reject(NextResponse.json({ message: 'Error al obtener las películas' }, { status: 500 }));
     });
 

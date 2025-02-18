@@ -1,4 +1,12 @@
-const IconHorizontalDots = ({ className, fill = false, duotone = true }) => {
+import React from 'react';
+
+interface IconHorizontalDotsProps {
+    className?: string;
+    fill?: boolean;
+    duotone?: boolean;
+}
+
+const IconHorizontalDots: React.FC<IconHorizontalDotsProps> = ({ className, fill = false, duotone = true }) => {
     return (
         <>
             {!fill ? (

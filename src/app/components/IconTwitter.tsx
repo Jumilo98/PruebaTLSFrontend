@@ -1,4 +1,12 @@
-const IconTwitter = ({ className, fill = false, duotone = true }) => {
+import React from 'react';
+
+interface IconTwitterProps {
+    className?: string;
+    fill?: boolean;
+    duotone?: boolean;
+}
+
+const IconTwitter: React.FC<IconTwitterProps> = ({ className, fill = false, duotone = true }) => {
     return (
         <>
             {fill ? (

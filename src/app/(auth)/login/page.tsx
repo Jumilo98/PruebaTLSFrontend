@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { alertService } from '@/utils/alerts';
-import Head from "next/head";
 import Link from "next/link";
 import axios from "axios";
 import IconMail from "../../components/IconMail";

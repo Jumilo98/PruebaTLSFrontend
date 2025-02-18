@@ -1,4 +1,12 @@
-const IconCreditCard = ({ className, fill = false, duotone = true }) => {
+import React from 'react';
+
+interface IconCreditCardProps {
+    className?: string;
+    fill?: boolean;
+    duotone?: boolean;
+}
+
+const IconCreditCard: React.FC<IconCreditCardProps> = ({ className, fill = false, duotone = true }) => {
     return (
         <>
             {!fill ? (

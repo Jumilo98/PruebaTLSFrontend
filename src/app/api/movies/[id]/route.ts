@@ -40,14 +40,12 @@ export async function GET(request: Request, { params }: { params: { id: string }
             return reject(NextResponse.json({ message: 'No se encontraron resultados para esta película.' }, { status: 404 }));
           }
         } catch (error) {
-          console.error('Error al parsear la respuesta:', error);
           return reject(NextResponse.json({ message: 'Error al procesar la respuesta de la API' }, { status: 500 }));
         }
       });
     });
 
     req.on('error', (error) => {
-      console.error('Error al obtener los detalles de la película:', error);
       return reject(NextResponse.json({ message: 'Error al obtener los detalles de la película' }, { status: 500 }));
     });
 

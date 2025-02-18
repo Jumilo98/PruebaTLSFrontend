@@ -1,4 +1,12 @@
-const IconDribbble = ({ className, fill = false, duotone = true }) => {
+import React from 'react';
+
+interface IconDribbbleProps {
+    className?: string;
+    fill?: boolean;
+    duotone?: boolean;
+}
+
+const IconDribbble: React.FC<IconDribbbleProps> = ({ className, fill = false, duotone = true }) => {
     return (
         <>
             {!fill ? (

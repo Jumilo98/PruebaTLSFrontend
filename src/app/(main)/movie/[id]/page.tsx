@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { alertService } from '@/utils/alerts';
+import { alertService } from "@/utils/alerts";
 import axios from "axios";
 
 interface Movie {
@@ -19,7 +19,7 @@ interface Movie {
 }
 
 interface Review {
-  user: string;
+  user: { username: string } | null;
   content: string;
   rating: number;
 }
@@ -36,19 +36,26 @@ export default function MovieDetail() {
   const [currentUser, setCurrentUser] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      alertService.error("No se encontró el ID de la película.");
+      return;
+    }
 
-    // Obtener el usuario actual desde localStorage
-    const storedUser = localStorage.getItem('user');
+    // Obtener usuario actual de localStorage
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      const user = JSON.parse(storedUser);
-      setCurrentUser(user.username);  // Asignamos el nombre de usuario al estado
+      try {
+        const user = JSON.parse(storedUser);
+        setCurrentUser(user.username);
+      } catch (error) {
+        alertService.error("Error al obtener el usuario actual.");
+      }
     }
 
     const fetchMovie = async () => {
       try {
         const res = await axios.get(`/api/movies/${id}`);
-        setMovie(res.data.movie);  // Asumimos que la respuesta contiene la clave `movie`
+        setMovie(res.data.movie);
       } catch (error) {
         alertService.error("Error al obtener la información de la película.");
       }
@@ -57,19 +64,15 @@ export default function MovieDetail() {
     const fetchReviews = async () => {
       try {
         const res = await axios.get(`/api/reviews/movie/${id}`);
-        setReviews(res.data);
+        setReviews(res.data || []);
       } catch (error) {
-        alertService.error("Error al obtener las reseñas de la película.");
+        alertService.error("Error al obtener las reseñas.");
       }
     };
 
     const loadData = async () => {
       setLoading(true);
-      try {
-        await Promise.all([fetchMovie(), fetchReviews()]);
-      } catch (error) {
-        alertService.error("Error al cargar la información de la película.");
-      }
+      await Promise.all([fetchMovie(), fetchReviews()]);
       setLoading(false);
     };
 
@@ -98,7 +101,7 @@ export default function MovieDetail() {
         alertService.error("Error al enviar la reseña.");
       }
     } catch (error) {
-      alertService.error("Error al enviar la reseña.");
+      alertService.error("No se pudo enviar la reseña.");
     }
   };
 
@@ -108,7 +111,11 @@ export default function MovieDetail() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold">{movie.primaryTitle}</h1>
-      <img src={movie.primaryImage} alt={movie.primaryTitle} className="w-full h-96 object-cover my-4" />
+      <img
+        src={movie.primaryImage}
+        alt={movie.primaryTitle}
+        className="w-full h-96 object-cover my-4"
+      />
       <p>{movie.description}</p>
 
       <div className="mt-6">

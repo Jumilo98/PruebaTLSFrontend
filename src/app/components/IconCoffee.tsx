@@ -1,4 +1,12 @@
-const IconCoffee = ({ className, fill = false, duotone = true }) => {
+import React from 'react';
+
+interface IconCoffeeProps {
+    className?: string;
+    fill?: boolean;
+    duotone?: boolean;
+}
+
+const IconCoffee: React.FC<IconCoffeeProps> = ({ className, fill = false, duotone = true }) => {
     return (
         <>
             {!fill ? (

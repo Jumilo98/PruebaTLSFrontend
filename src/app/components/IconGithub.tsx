@@ -1,4 +1,12 @@
-const IconGithub = ({ className, fill = false, duotone = true }) => {
+import React from 'react';
+
+interface IconGithubProps {
+    className?: string;
+    fill?: boolean;
+    duotone?: boolean;
+}
+
+const IconGithub: React.FC<IconGithubProps> = ({ className, fill = false, duotone = true }) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
