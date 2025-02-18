@@ -1,8 +1,6 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    serverActions: true, // Si lo estás usando
-  },
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
   env: {
     MONGO_URI: process.env.MONGO_URI,
   }, 
@@ -14,10 +12,10 @@ const nextConfig = {
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
-      config.externals = [...config.externals, 'react-server-dom-webpack/server.edge'];
+      config.externals = [...(config.externals || []), 'react-server-dom-webpack/server.edge'];
     }
     return config;
-  }
+  },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
