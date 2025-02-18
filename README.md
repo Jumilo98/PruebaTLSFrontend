@@ -172,18 +172,23 @@ De esta manera con el MongoDB Compass podras ingresar a tus BD locales
 
 ### **Paso 6: Despliegue del Proyecto**
 
-Para poder desplegar se puede utilizar cualquier servidor APache/Ngix
+Para poder desplegar se puede utilizar Vercel y MongoAtlas
 
 Deberas ejectuar el siguiente comando:
 
 ```bash
-npm run build
+vercel
 ```
 
-El compilador empezara a empaquetar el proyecto que de tal manera puedas copiar y pegarlo dentro de tu servidor
+El compilador empezara a empaquetar el proyecto que de tal manera puedas utilizarlo dentro de Vercel
+
+1. Se debera tener autenticado Mongoatlas y Vercel con la cuenta de github 
+2. Se tendra que que agregar las variables de entorno dentro de Vercel
+3. Cuando se cree un cluster DB, tendremos que copiar el acceso de Connect a nuestro Vercel
+4. Redesplegamos el proyecto y estara conectado
 
 En mi caso esta alojado en:
 
-**https://sockets.perseo-pruebas1.com/login**
+**https://prueba-tlsf-rontend.vercel.app/login**
 
 Dentro se podra verificar su respectivo funcionamiento 
