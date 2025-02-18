@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import axios from 'axios';
 import MovieCard from '../../components/MovieCard';
 import { alertService } from '@/utils/alerts';
@@ -14,7 +14,7 @@ interface Movie {
   rating: string;
 }
 
-export default function SearchResults() {
+function SearchResultsContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';  // Obtener el parámetro de búsqueda "q"
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -69,5 +69,13 @@ export default function SearchResults() {
         ))}
       </div>
     </div>
+  );
+}
+
+export default function SearchResults() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <SearchResultsContent />
+    </Suspense>
   );
 }
