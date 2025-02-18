@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     // Llamada a la API externa
     const response = await axios.get('https://imdb236.p.rapidapi.com/imdb/top250-movies', {
       headers: {
-        'x-rapidapi-key': '406c35f718msh84ec2e173337740p17f35fjsn949d9cde7620',
+        'x-rapidapi-key': process.env.RAPIDAPI_KEY,
         'x-rapidapi-host': 'imdb236.p.rapidapi.com',
       },
     });
