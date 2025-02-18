@@ -56,15 +56,17 @@ function SearchResultsContent() {
   }, [fetchMovies]);
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-4">
       {/* Panel del Encabezado */}
-      <div className="panel mb-3">
-        <h1 className="text-3xl font-bold text-center text-primary">
-          🎬 Resultados para: "{query}"
+      <div className="panel mb-6 text-center">
+        <h1 className="text-2xl sm:text-3xl font-bold text-primary">
+          Resultados para: "{query}"
         </h1>
+      </div>
 
-        {/* Paginación Arriba */}
-        <div className="flex justify-center mt-4">
+      {/* Paginación Arriba (Ahora con scroll horizontal en móviles) */}
+      <div className="flex justify-center">
+        <div className="overflow-x-auto w-full">
           <Pagination page={page} totalPages={totalPages} onPageChange={(newPage) => setPage(newPage)} />
         </div>
       </div>
