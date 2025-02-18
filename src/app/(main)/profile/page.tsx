@@ -118,21 +118,33 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className="panel lg:col-span-2 xl:col-span-3">
-                        <div className="flex items-center justify-between mb-5">
-                            <h5 className="font-semibold text-lg dark:text-white-light">Historial de Reseñas</h5>
+                        {/* Título Centrado en Móvil y Pantallas Grandes */}
+                        <div className="flex justify-center mb-5">
+                            <h5 className="font-bold text-lg dark:text-white-light text-center w-full">
+                                Historial de Reseñas
+                            </h5>
                         </div>
-                        <div>
+
+                        {/* Contenedor de Reseñas en Grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {reviews.length === 0 ? (
-                                <p>No tienes reseñas realizadas.</p>
+                                <p className="text-center text-gray-500 dark:text-gray-400 col-span-full">
+                                    No tienes reseñas realizadas.
+                                </p>
                             ) : (
                                 reviews.map((review) => (
-                                    <div key={review._id} className="border-b border-[#ebedf2] dark:border-[#1b2e4b] py-2">
-                                        <h6 className="text-[#515365] font-semibold dark:text-white-dark">
-                                            Película: {review.movie}
+                                    <div 
+                                        key={review._id} 
+                                        className="border border-[#ebedf2] dark:border-[#1b2e4b] p-4 bg-white dark:bg-[#1b2e4b] shadow-md rounded-lg"
+                                    >
+                                        <h6 className="text-[#515365] font-semibold dark:text-white-dark truncate">
+                                            🎬 Película: {review.movie}
                                         </h6>
-                                        <p>Calificación: {review.rating} ⭐</p>
-                                        <p>{review.content}</p>
-                                        <p className="text-[#6c757d]">Publicado el: {new Date(review.createdAt).toLocaleDateString()}</p>
+                                        <p className="text-yellow-500 font-medium">⭐ {review.rating}/5</p>
+                                        <p className="text-gray-700 dark:text-gray-300">{review.content}</p>
+                                        <p className="text-xs text-[#6c757d] mt-2">
+                                            🕒 Publicado el: {new Date(review.createdAt).toLocaleDateString()}
+                                        </p>
                                     </div>
                                 ))
                             )}
