@@ -10,12 +10,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      config.externals = [...(config.externals || []), 'react-server-dom-webpack/server.edge'];
-    }
-    return config;
-  },
 };
 
 export default nextConfig;

@@ -1,4 +1,12 @@
-const IconCaretsDown = ({ className, fill = false, duotone = true }) => {
+import React from 'react';
+
+interface IconCaretsDownProps {
+  className?: string;
+  fill?: boolean;
+  duotone?: boolean;
+}
+
+const IconCaretsDown: React.FC<IconCaretsDownProps> = ({ className, fill = false, duotone = true }) => {
     return (
         <>
             {!fill ? (

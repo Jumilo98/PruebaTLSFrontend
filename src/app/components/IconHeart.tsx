@@ -1,4 +1,12 @@
-const IconHeart = ({ className, fill = false, duotone = true }) => {
+import React from 'react';
+
+interface IconHeartProps {
+    className?: string;
+    fill?: boolean;
+    duotone?: boolean;
+}
+
+const IconHeart: React.FC<IconHeartProps> = ({ className, fill = false, duotone = true }) => {
     return (
         <>
             {!fill ? (
