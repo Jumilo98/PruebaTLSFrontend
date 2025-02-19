@@ -23,8 +23,21 @@ export async function GET(req: Request) {
     });
 
     // **Siempre devuelve un array**, así que lo tomamos directamente
-    const movies = Array.isArray(response.data) ? response.data : [];
-
+    const movies = response.data.map((movie: any) => ({
+      id: movie.id || "", 
+      primaryTitle: movie.primaryTitle || "", 
+      year: movie.year || "", 
+      primaryImage: movie.primaryImage ? movie.primaryImage : null, // 
+      type: movie.type || "", 
+      releaseDate: movie.releaseDate || "", 
+      contentRating: movie.contentRating || "", 
+      genres: movie.genres || "", 
+      numVotes: movie.numVotes || "", 
+      averageRating: movie.averageRating || 0, 
+      description: movie.description || "",
+    }));
+    
+    
     // Aplicar paginación manualmente
     const totalMovies = movies.length;
     const totalPages = Math.ceil(totalMovies / limit);
